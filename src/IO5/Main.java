@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         class Animal implements Serializable {
             private final String name;
@@ -33,12 +33,15 @@ public class Main {
                         int size = reader.read();
                           Animal [] array = new Animal[size];
                       } else {
-                          ObjectInputStream.readObject();
+                          Object o = reader.read();
+                          ObjectOutputStream os = new ObjectOutputStream(array);
+                          os.writeObject(data[i]);
+                          os.flush();
+                          os.close();
                       }
-
-
                   }
-            } catch (IllegalArgumentException e){
+
+            } catch (IllegalArgumentException | IOException e){
                 throw e;
             }
         }
