@@ -26,23 +26,24 @@ public class Main {
 
         int size;
         Object o;
+        Animal[] array = new Animal[0];
 
         try {
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-            if ((size = ois.read()) != -1) {
-                Animal[] array = new Animal[size];
-                while ((o = ois.read()) != null) {
-                    for (int i = 0; i < array.length; i++) {
-                        array[i] = (Animal) o;
-                    }
+
+            size = ois.readInt();
+            array = new Animal[size];
+
+                for (int i = 0; i < array.length; i++) {
+                    o = ois.readObject();
+                    array[i] = (Animal) o;
                 }
-                return array;
-            }
-            ois.close();
-        } catch (IllegalArgumentException | IOException | ClassCastException e) {
-            System.out.println(e.getMessage());
+                ois.close();
+
+
+        } catch (IllegalArgumentException | IOException | ClassCastException | ClassNotFoundException e) {
+            throw new IllegalArgumentException ("IllegalArgumentException");
         }
-        return System.out.println(e.getMessage());
+        return array;
     }
 }
-
